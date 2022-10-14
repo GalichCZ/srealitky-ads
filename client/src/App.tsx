@@ -40,7 +40,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>BYTY NA PRODEJ</h1>
+      <h1>BYTY NA PRODEJ !</h1>
       <div className="sizes">
         {sizes.map((sizeItem) => {
           return (
