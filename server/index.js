@@ -2,15 +2,11 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios");
 const controller = require("./controller/ads.controller");
+const db = require("./db");
 
-const PORT = 4444;
 const app = express();
 app.use(express.json());
 app.use(cors());
-
-app.get("/", controller.getAdds);
-app.get("/pages", controller.getPages);
-
 const items500 = [];
 
 async function parse() {
@@ -33,22 +29,47 @@ async function parse() {
         })
       );
   }
+  console.log("parse done!");
 }
-// setTimeout(() => {
-//   items500.forEach((el) => {
-//     controller.addAd(el.title, el.img, el.url, el.locality);
-//   });
-// }, 2000);
+
+const writeData = async () => {
+  db.query("DELETE FROM ads");
+  items500.forEach((el) => {
+    controller.addAd(el.title, el.img, el.url, el.locality);
+  });
+  console.log("write data");
+};
+
+const connect = () => {
+  db.query(
+    "CREATE TABLE IF NOT EXISTS ads (id SERIAL PRIMARY KEY, title VARCHAR(255), img VARCHAR(255), url VARCHAR(255), locality VARCHAR(255))"
+  ).catch((err) => console.log("PG ERROR", err));
+};
+const items = async () => {
+  const rows = await db.query(`SELECT COUNT(id) FROM ads`);
+  console.log(rows.rows[0].count);
+  if (rows.rows[0].count <= 500) writeData();
+};
+setTimeout(() => {
+  items();
+}, 1000);
+
+app.get("/", (req, res) => {
+  res.send("hi");
+});
+app.get("/values", controller.getAdds);
+app.get("/pages", controller.getPages);
 
 const start = async () => {
   try {
-    app.listen(PORT, () => {
-      console.log("server started");
+    app.listen(5000, () => {
+      console.log("server started on " + 5000);
     });
   } catch (error) {
     console.log(error);
   }
 };
 
-// parse();
 start();
+parse();
+connect();

@@ -4,7 +4,7 @@ import axios from "axios";
 import Item from "./Components/Item";
 
 function App() {
-  const [data, setData] = useState<object[] | null>(null);
+  const [dataFetched, setDataFetched] = useState<object[] | null>(null);
   const [size, setSize] = useState<number>(20);
   const [pages, setPages] = useState<number>();
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -13,19 +13,19 @@ function App() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4444/pages?size=${size}`)
+      .get(`/api/pages?size=${size}`)
       .then((data) => setPages(parseInt(data.data)));
   }, [size]);
 
   useEffect(() => {
     setIsLoading(true);
-    axios
-      .get(`http://localhost:4444/?page=${currentPage}&size=${size}`)
-      .then((data) => {
-        setData(data.data);
-        setIsLoading(false);
-      });
+    axios.get(`/api/values?page=${currentPage}&size=${size}`).then((data) => {
+      setDataFetched(data.data);
+      dataFetched && setIsLoading(false);
+    });
   }, [currentPage, size]);
+
+  console.log(isLoading);
 
   const createPagination = () => {
     const arr: number[] = [];
@@ -60,7 +60,7 @@ function App() {
           <div>loading</div>
         ) : (
           <div className="items">
-            {data?.map((flat: any) => {
+            {dataFetched?.map((flat: any) => {
               return (
                 <Item
                   key={flat.id}

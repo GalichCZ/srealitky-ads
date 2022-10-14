@@ -1,19 +1,23 @@
 const db = require("../db");
 class UserController {
   async addAd(title, img, url, locality) {
-    const newAd = await db.query(
+    await db.query(
       `INSERT INTO ads (title, img, url, locality) values ($1, $2, $3, $4) RETURNING *`,
       [title, img, url, locality]
     );
-    console.log(newAd);
+    // console.log(newAd);
   }
   async getAdds(req, res) {
     const { page, size } = req.query;
-    const ads = await db.query(
-      "SELECT * FROM ads ORDER BY ads.id LIMIT $2 OFFSET (($1-1)*$2)",
-      [page, size]
-    );
-    res.json(ads.rows);
+    try {
+      const ads = await db.query(
+        "SELECT * FROM ads ORDER BY ads.id LIMIT $2 OFFSET (($1-1)*$2)",
+        [page, size]
+      );
+      res.json(ads.rows);
+    } catch (error) {
+      res.json("Oops, something goes wrong");
+    }
   }
   async getPages(req, res) {
     const rowsDb = await db.query(`SELECT COUNT(id) FROM ads`);
