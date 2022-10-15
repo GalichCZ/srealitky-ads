@@ -19,7 +19,7 @@ body {
 .sizes {
   display: flex;
   position: absolute;
-  right: 10%;
+  right: 1%;
   top: 40px;
 }
 .sizes p {
@@ -30,9 +30,10 @@ body {
   display: flex;
   width: 100%;
   justify-content: center;
+  flex-wrap: wrap;
 }
 .pagination p {
-  margin: 0 5px;
+  margin: 5px 5px;
   border: 1px solid black;
   width: 20px;
   height: 20px;
@@ -87,7 +88,7 @@ body {
     grid-template-columns: 1fr 1fr;
   }
 }
-@media only screen and (max-width: 1070px) {
+@media only screen and (max-width: 930px) {
   .items {
     grid-template-columns: 1fr;
   }

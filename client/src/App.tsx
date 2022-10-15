@@ -21,8 +21,8 @@ function App() {
     setIsLoading(true);
     axios.get(`/api/values?page=${currentPage}&size=${size}`).then((data) => {
       setDataFetched(data.data);
-      dataFetched && setIsLoading(false);
     });
+    setIsLoading(false);
   }, [currentPage, size]);
 
   console.log(isLoading);
