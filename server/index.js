@@ -45,11 +45,13 @@ const connect = () => {
     "CREATE TABLE IF NOT EXISTS ads (id SERIAL PRIMARY KEY, title VARCHAR(255), img VARCHAR(255), url VARCHAR(255), locality VARCHAR(255))"
   ).catch((err) => console.log("PG ERROR", err));
 };
+
 const items = async () => {
   const rows = await db.query(`SELECT COUNT(id) FROM ads`);
   console.log(rows.rows[0].count);
   if (rows.rows[0].count <= 500) writeData();
 };
+
 setTimeout(() => {
   items();
 }, 1000);
@@ -71,5 +73,5 @@ const start = async () => {
 };
 
 start();
-parse();
 connect();
+parse();

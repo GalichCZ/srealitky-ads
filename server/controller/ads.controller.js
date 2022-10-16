@@ -5,8 +5,8 @@ class UserController {
       `INSERT INTO ads (title, img, url, locality) values ($1, $2, $3, $4) RETURNING *`,
       [title, img, url, locality]
     );
-    // console.log(newAd);
   }
+
   async getAdds(req, res) {
     const { page, size } = req.query;
     try {
@@ -19,6 +19,7 @@ class UserController {
       res.json("Oops, something goes wrong");
     }
   }
+
   async getPages(req, res) {
     const rowsDb = await db.query(`SELECT COUNT(id) FROM ads`);
     const size = req.query;

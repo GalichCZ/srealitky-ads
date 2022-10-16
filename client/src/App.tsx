@@ -25,8 +25,6 @@ function App() {
     setIsLoading(false);
   }, [currentPage, size]);
 
-  console.log(isLoading);
-
   const createPagination = () => {
     const arr: number[] = [];
 
